@@ -1,0 +1,170 @@
+<html>
+
+
+
+
+  <head>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Merriweather+Sans&display=swap"rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Fredericka+the+Great&family=Gaegu:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+
+
+
+    <style>
+        #myDIV
+        {
+        display: inline-block;
+        }
+        
+        body
+        {
+          background: #aa4b6b;  /* fallback for old browsers */
+          background: -webkit-linear-gradient(to right, #3b8d99, #6b6b83, #aa4b6b);  /* Chrome 10-25, Safari 5.1-6 */
+          background: linear-gradient(to right, #3b8d99, #6b6b83, #aa4b6b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+          font-family: "Merriweather", serif;
+          color: :"red";
+        }
+
+        #tagline
+        {
+          font-family: 'Permanent Marker', cursive;
+          font-size: 50px;
+          color:#F5F5F5;
+        }
+
+        .instructions
+        {
+            font-family: 'Courgette', cursive;
+            font-family: 'Fredericka the Great', cursive;
+            font-family: 'Gaegu', cursive;
+            font-family: 'Quicksand', sans-serif;
+            color: #F5F5F5;
+            word-spacing: 7px;
+        }
+      </style>
+  </head>
+
+
+  <body>
+    
+      <div >
+            <a id="logo" href="">
+              <img class="logo_img" align="right-center" style="margin-left:150px" width="200" height="200" src="static\logo4.png" alt="Logo"/>
+            </a>
+
+            <h4 class="mt-4" style="margin-left:300px" id="tagline" style="margin-left: 300px">
+                Easy to Learn अंग्रेजी with ANGREASY!
+            </h4>
+      </div>
+
+
+    <div align="right-center">
+        <form action="/" method="POST" >
+
+            <input type="text" id="url-input" class="form-control" placeholder="enter youtube url"  name="url"/>
+            <button id="search"  class="btn" type="submit">Search Meaning</button>
+        </form>
+
+
+        {% if e %}
+              <div class="alert alert-warning">
+                <strong>Warning!</strong>{{e}}
+              </div>
+        {% elif url %}
+          <div style="margin-left: 100px">
+              <div id="iframeHolder">
+                   <iframe
+                      id="youtube-embed"
+                      frameBorder="0"
+                      width="1000"
+                      height="450"
+                      src="{{url}}"
+                      allow="autoplay">
+                    </iframe>
+              </div>
+
+          </div>
+    </div>
+
+    
+        
+
+    <div style="margin-left: 80px">
+          {% for i in dispan %}
+                    <div id="myDIV">
+
+                    <div class="card" style="width: 25rem;height:250px;margin:25px">
+                      <div class="card-body">
+                        <h5 class="card-title" style="font-weight: bold;color:#a02c1e">{{i}}</h5>
+                        <p class="card-text" style="text-overflow: ellipsis,width:900px">{{dispan[i][0]}}</p>
+                        <button class="timestamp-button btn btn-primary mb-2">
+                                {{dispan[i][1]}}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+          {% endfor %}
+    </div>
+
+
+    {% else %}
+          <div class="instructions" align="center">
+            <h2 class="mt-4" style="margin-right:180px">
+              Get the <b>Meaning</b> of the words with their <b>Time stamp</b>
+            </h2>
+            <h4 class="mt-4" style="margin-right:50px">
+              Just enter URL of Youtube video, Bingo! Words used in video with the synonyms are ready.
+            </h4>
+          </div>
+    {% endif %}
+
+
+  <script type="text/javascript">
+        $(".timestamp-button").click(function (event) 
+          {
+            let timestamp = this.innerText;
+            let splitTimestamp = timestamp.split(":");
+            let hour = parseInt(splitTimestamp[0]),
+              minutes = parseInt(splitTimestamp[1])
+              seconds = parseInt(splitTimestamp[2]);
+            let startTime = hour*60+minutes * 60 + seconds;
+          
+            $("#youtube-embed").attr(
+              "src",
+              "https://www.youtube.com/embed/{{ VIDEOID }}?start=" + startTime
+            );
+
+            $('html,body').animate({
+            scrollTop: $("#iframeHolder").offset().top},
+            'slow');
+
+          });
+  </script>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
+  
+  <script type="text/javascript">
+          $(function(){
+              $('#button').click(function(){
+                  if(!$('#iframe').length) {
+                          $('#iframeHolder').html('<iframe id="iframe" src="{{url}}" width="700" height="450"></iframe>');
+                  }
+              });
+          });
+  </script>
+
+  </body>    
+</html>
